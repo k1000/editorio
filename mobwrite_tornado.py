@@ -5,7 +5,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.escape
 from tornado.web import HTTPError
-import mobwrite_daemon
+import lib.mobwrite_daemon as mobwrite_daemon
 mobwrite_core = mobwrite_daemon.mobwrite_core
 
 

@@ -56,7 +56,7 @@ MAX_VIEWS = 10000
 MEMORY = 0
 FILE = 1
 BDB = 2
-STORAGE_MODE = MEMORY
+STORAGE_MODE = FILE
 
 # Relative location of the data directory.
 DATA_DIR = ROOT_DIR + "data"
