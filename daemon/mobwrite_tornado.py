@@ -33,6 +33,7 @@ class MobWriteHandler(tornado.web.RequestHandler):
             r = mw.handleRequest(p)
             self.write('mobwrite.callback(%s)' % tornado.escape.json_encode(r))
         else:
+            #No data sent.
             self.send_error(500)
         
     def post(self):
@@ -54,7 +55,7 @@ class HelloHandler(tornado.web.RequestHandler):
 def main():
     mobwrite_core.CFG.initConfig(mobwrite_daemon.ROOT_DIR
                                  + "lib/mobwrite_config.txt")
-    port = 8091
+    port = 3017
     settings = dict(
         static_path = os.path.join(os.path.dirname(__file__), "static"),
         debug = 1
