@@ -47,6 +47,8 @@ class MobWriteHandler(tornado.web.RequestHandler):
 
 class HelloHandler(tornado.web.RequestHandler):
     def get(self):
+        self.render('templates/editor.html')
+        return
         self.write('<html><body>' +
                    'Use <tt>/mobwrite</tt> for the mobwrite API.' +
                    '</body></html>')

@@ -33,8 +33,6 @@ var mobwrite = {};
  * URL of Ajax gateway.
  * @type {string}
  */
-//mobwrite.syncGateway = '/mobwrite-tornado/q.py';
-//mobwrite.syncGateway = 'http://localhost:3017/mobwrite';
 mobwrite.syncGateway = '/mobwrite';
 
 
