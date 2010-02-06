@@ -45,25 +45,20 @@ class MobWriteHandler(tornado.web.RequestHandler):
         return self._query()
 
 
-class HelloHandler(tornado.web.RequestHandler):
+class HomeHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('templates/editor.html')
-        return
-        self.write('<html><body>' +
-                   'Use <tt>/mobwrite</tt> for the mobwrite API.' +
-                   '</body></html>')
-
 
 def main():
     mobwrite_core.CFG.initConfig(mobwrite_daemon.ROOT_DIR
                                  + "lib/mobwrite_config.txt")
     port = 3017
-    settings = dict(
-        static_path = os.path.join(os.path.dirname(__file__), "static"),
-        debug = 1
-    )
+    settings = {
+        'static_path': os.path.join(os.path.dirname(__file__), "static"),
+        'debug': 1,
+    }
     application = tornado.web.Application([
-        (r'/', HelloHandler),
+        (r'/', HomeHandler),
         (r'/mobwrite', MobWriteHandler),
     ], **settings)
 
