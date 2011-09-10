@@ -53,4 +53,4 @@ class MWConnection(tornadio.SocketConnection):
 
 
 #use the routes classmethod to build the correct resource
-MWRouter = tornadio.get_router(MWConnection)
+MWRouter = tornadio.get_router(MWConnection, resource="mw")

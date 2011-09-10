@@ -402,20 +402,6 @@ mobwrite.shareObj.prototype.syncText = function() {
 
 
 
-ws = new io.Socket(window.location.hostname, {
-        port:8011,
-        resource:"socket.io/",
-        transports:['websocket', 'flashsocket','xhr-multipart', 'xhr-polling']
-    }
-);
-ws.on('message', function( msg) { 
-  mobwrite.syncRun2_(msg.mw + '\n');
-});
-ws.on('connect', function( msg) {window.console.info( "connected")} );
-ws.on('disconnect', function( msg) {window.console.info( "disconnected" )});
-
-
-
 /**
  * Collect all client-side changes and send them to the server.
  * @private
@@ -949,6 +935,4 @@ mobwrite.unshare = function(var_args) {
 };
 
 // Export the mobwrite global variable so that it survives Google's JS compiler.
-window['mobwrite'] = mobwrite;
-ws.connect();
 
