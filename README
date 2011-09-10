@@ -1,0 +1,22 @@
+EDITORIO 
+========
+
+"Cloud" edit files 
+based on mobwrite-tornado
+
+Credits
+-------
+
+Based on work of:
+
+* Neil Fraser et al. - creator of mobwrite
+
+* Avery Pennarun (apenwarr) - wrote a tornado wrapper around the original mobwrite
+                            daemon. Also made some small fixes. See:
+    http://groups.google.com/group/mobwrite/browse_thread/thread/871e899bec56d005
+
+* Michael Huynh (mikexstudios) - based on https://github.com/mikexstudios/mobwrite-tornado.git
+
+* Kamil Selwa - ported to tornadio and socket.io 
+
+
