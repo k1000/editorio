@@ -1,18 +1,22 @@
 EDITORIO 
 ========
 
+"Cloud" edit files 
 
-Authors:
---------
-Neil Fraser et al. - a gentleman and a scholar. A god among men. He wrote mobwrite
-                     and the original daemons.
 
-Avery Pennarun (apenwarr) - wrote a tornado wrapper around the original mobwrite
+Credits
+-------
+
+Based on work of:
+
+* Neil Fraser et al. - creator of mobwrite
+
+* Avery Pennarun (apenwarr) - wrote a tornado wrapper around the original mobwrite
                             daemon. Also made some small fixes. See:
     http://groups.google.com/group/mobwrite/browse_thread/thread/871e899bec56d005
 
-Michael Huynh (mikexstudios) - 
+* Michael Huynh (mikexstudios) - 
 
-Kamil Selwa - ported to tornadio and socket.io 
+* Kamil Selwa - ported to tornadio and socket.io 
 
 
