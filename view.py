@@ -28,22 +28,29 @@ class MWConnection(tornadio.SocketConnection):
             self.participants.add( self )
 
         if "mw" in msg:
-            delta = "POST\n%s\n\n" % str(msg["mw"])
-            respond = self._query( delta )
-            #participants = filter( lambda p: p.res == msg["res"], self.participants )
+            respond = self.on_mw_request( msg["mw"] )
             self.send(respond)
-            #self.broadcast(respond, self.participants )
+            #self.ping_users()
     
+    def on_mw_request(self, msg):
+        delta = "POST\n%s" % str(msg) #modwrite expects POST header
+        respond = self.mw.handleRequest(delta)
+        return respond
+
     def on_close(self):
         self.participants.remove(self)
 
     def broadcast(self, msg, to ):
         map(self.send( msg ), to )
     
-    def _query(self, msg):
-    	
-    	respond = self.mw.handleRequest(msg)
-        return respond
+    @property
+    def other_participants(self):
+        return filter( lambda p: p is not self, self.participants )
+
+    def ping_users(self):
+        self.broadcast( {"ping":"pong"}, self.other_participants )
+
+    
 
 
 #use the routes classmethod to build the correct resource

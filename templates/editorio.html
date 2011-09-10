@@ -15,11 +15,20 @@ TEXTAREA {
 </STYLE>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdn.socket.io/stable/socket.io.js" ></script>
+
+<script type="text/javascript" src="/static/CodeMirror-2.12/lib/codemirror.js"></script>
+<script type="text/javascript" src="/static/CodeMirror-2.12/lib/overlay.js"></script>
+<script type="text/javascript" src="/static/CodeMirror-2.12/mode/javascript/javascript.js"></script>
+
 <SCRIPT SRC="/static/js/diff_match_patch_uncompressed.js"></SCRIPT>
 <SCRIPT SRC="/static/js/mobwrite_core_io.js"></SCRIPT>
 <SCRIPT SRC="/static/js/mobwriteio.js"></SCRIPT>
+
+
+<link rel="stylesheet" type="text/css" href="/static/CodeMirror-2.12/lib/codemirror.css" /> 
+<link rel="stylesheet" type="text/css" href="/static/css/theme_dark.css" /> 
 </HEAD>
-<BODY ONLOAD="mobwrite.debug=true; mobwrite.share('demo_editor_title', 'demo_editor_text');">
+<BODY >
 
 <TABLE STYLE="height: 100%; width: 100%">
 
@@ -30,6 +39,46 @@ TEXTAREA {
 <TR><TD><TEXTAREA ID="demo_editor_text" STYLE="width: 100%; height: 100%"></TEXTAREA></TD></TR>
 
 </TABLE>
+<script type="text/javascript">
+	
+	var text_area = document.getElementById('demo_editor_text');
+	var code_mirror = CodeMirror.fromTextArea( text_area, {
+				mode: {name: "javascript"},
+				onChange: function(cm) { text_area.value = code_mirror.getValue(); },
+				lineNumbers: true,
+				indentUnit: 4
+			});
 
+/*var myCodeMirror = CodeMirror(document.getElementById('demo_editor_title'), {
+  	mode:  "javascript"
+});*/
+/**
+* Retrieve the user's text.
+* @return {string} Plaintext content.
+*/
+mobwrite.shareTextareaObj.prototype.getClientText = function() {
+	if (!mobwrite.validNode_(this.element)) {
+		mobwrite.unshare(this.file);
+	}
+	var text = mobwrite.shareTextareaObj.normalizeLinebreaks_(code_mirror.getValue());
+	if (this.element.type == 'text') {
+	// Numeric data should use overwrite mode.
+	this.mergeChanges = !text.match(/^\s*-?[\d.,]+\s*$/);
+	}
+	return text;
+};
+
+/**
+* Set the user's text.
+* @param {string} text New text
+*/
+mobwrite.shareTextareaObj.prototype.setClientText = function(text) {
+	code_mirror.setValue(text);
+	this.fireChange(this.element);
+};
+
+mobwrite.debug=true; 
+mobwrite.share('demo_editor_text');
+</script>
 </BODY>
 </HTML>

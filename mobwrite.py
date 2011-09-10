@@ -29,12 +29,9 @@ class MobWriteHandler(tornado.web.RequestHandler):
         print q
         if q:   # normal postdata
             r = mw.handleRequest(q)
-            
-            print ( ".............mobwrite.callback(%s)" % r )
             self.write(r)
         elif p:  # jsonp response requested
             r = mw.handleRequest(p)
-            print ( ">>>>>>>>>mobwrite.callback(%s)" % r )
             self.write('mobwrite.callback(%s)' % tornado.escape.json_encode(r))
         else:
             #No data sent.
