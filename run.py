@@ -13,7 +13,6 @@ class HomeHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('templates/editorio.html')
 
-
 #configure the Tornado application
 application = tornado.web.Application(
     [(r"/", HomeHandler), MWRouter.route()],

@@ -33,8 +33,6 @@ TEXTAREA {
 <TABLE STYLE="height: 100%; width: 100%">
 
 <TR><TD HEIGHT=1><H1>MobWrite as a Collaborative Editor</H1></TD></TR>
-
-
 <TR><TD><TEXTAREA ID="demo_editor_text" STYLE="width: 100%; height: 100%"></TEXTAREA></TD></TR>
 
 </TABLE>
@@ -51,7 +49,7 @@ window['mobwrite'] = mobwrite;
 
 ws = new io.Socket(window.location.hostname, {
         port:8011,
-        resource:"socket.io",
+        resource:"mw",
         transports:['websocket', 'flashsocket','xhr-multipart', 'xhr-polling']
     }
 );
@@ -92,16 +90,14 @@ mobwrite.shareTextareaObj.prototype.getClientText = function() {
 mobwrite.shareTextareaObj.prototype.setClientText = function(text) {
 	code_mirror.setValue(text);
 	this.fireChange(this.element);
-	// position cursor back on the previous location
+	// restores position cursor back on the previous location
 	code_mirror.setCursor( code_mirror.lastCursor );
 };
 
 mobwrite.debug=true; 
 mobwrite.share('demo_editor_text');
 
-document.getElementById("btnSave").onclick=function(){
-  window.open("data:text/save;charset=utf-8,"+encodeURI(code_mirror.getValue()));
-}
+
 </script>
 
 </BODY>
