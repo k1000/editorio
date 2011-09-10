@@ -65,7 +65,10 @@ mobwrite.shareTextareaObj.prototype.getClientText = function() {
 	// Numeric data should use overwrite mode.
 	this.mergeChanges = !text.match(/^\s*-?[\d.,]+\s*$/);
 	}
+	// takes position of the cursor
+	code_mirror.lastCursor = code_mirror.getCursor()
 	return text;
+
 };
 
 /**
@@ -75,6 +78,8 @@ mobwrite.shareTextareaObj.prototype.getClientText = function() {
 mobwrite.shareTextareaObj.prototype.setClientText = function(text) {
 	code_mirror.setValue(text);
 	this.fireChange(this.element);
+	// position cursor back on the previous location
+	code_mirror.setCursor( code_mirror.lastCursor );
 };
 
 mobwrite.debug=true; 
