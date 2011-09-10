@@ -8,7 +8,7 @@ import os
 from setuptools import setup, find_packages
 
 setup(
-    name = 'chatroomio',
+    name = 'editorio',
     version = "0.1",
 
     description = 'tornadio chat rooms.',
