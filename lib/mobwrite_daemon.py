@@ -436,6 +436,7 @@ class DaemonMobWrite(mobwrite_core.MobWrite):
 
   def handleRequest(self, text):
     actions = self.parseRequest(text)
+    
     return self.doActions(actions)
 
   def doActions(self, actions):

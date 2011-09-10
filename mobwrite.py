@@ -26,11 +26,15 @@ class MobWriteHandler(tornado.web.RequestHandler):
         mw = mobwrite_daemon.DaemonMobWrite()
         p = str(self.get_argument('p', '', strip=False))
         q = str(self.get_argument('q', '', strip=False))
+        print q
         if q:   # normal postdata
             r = mw.handleRequest(q)
+            
+            print ( ".............mobwrite.callback(%s)" % r )
             self.write(r)
         elif p:  # jsonp response requested
             r = mw.handleRequest(p)
+            print ( ">>>>>>>>>mobwrite.callback(%s)" % r )
             self.write('mobwrite.callback(%s)' % tornado.escape.json_encode(r))
         else:
             #No data sent.
@@ -64,8 +68,8 @@ def main():
 
     srv = tornado.httpserver.HTTPServer(application)
     srv.listen(port)
-    mobwrite_core.LOG.info("Listening on port %d..." 
-                           % srv._socket.getsockname()[1])
+
+    mobwrite_core.LOG.info("Listening on port %d... " % port )
     loop = tornado.ioloop.IOLoop.instance()
     try:
         loop.start()

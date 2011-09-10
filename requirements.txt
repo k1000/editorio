@@ -1,3 +1,2 @@
 -e git+git://github.com/facebook/tornado.git#egg=tornado
-
-pycurl == 7.16.4
+tornadio
