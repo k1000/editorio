@@ -31,13 +31,12 @@ textarea {
 </head>
 <body >
 
-<table style="height: 100%; width: 100%">
-<input type="text" id="res" value="wwww"/>
-<button id="resBot">SET</button>
-<tr><td height=1><h1>mobwrite as a collaborative editor</h1></td></tr>
-<tr><td><textarea id="demo_editor_text" style="width: 100%; height: 100%"></textarea></td></tr>
 
-</table>
+<p><input type="text" id="res" value="wwww"/>
+<button id="resBot">SET</button>
+</p>
+<textarea id="demo_editor_text" style="width: 100%; height: 100%"></textarea>
+
 <script type="text/javascript">
 	
 var text_area = document.getElementById('demo_editor_text');
@@ -46,10 +45,16 @@ var code_mirror = CodeMirror.fromTextArea( text_area, {
 	lineNumbers: true,
 	indentUnit: 4
 });
-
+code_mirror.highlithLine = function(line){
+  this.setLineClass(line, "activeline");
+}
+code_mirror.higligts = [];
+code_mirror.highlithLine = function(from, to){
+  code_mirror.push( this.markText(from, to, "new") );
+}
 
 $("#resBot").click( function() {
-  connect( code_mirror );
+  share( code_mirror, $("#res").val() );
   return false
 })
 </script>

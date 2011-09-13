@@ -22,7 +22,6 @@ class MWConnection(tornadio.SocketConnection):
         self.participants.add(self)
 
     def on_message(self, msg):
-        
         if "mw" in msg:
             respond = self.on_mw_request( msg )
             self.send({"mw":respond, "res":msg["res"] })
@@ -38,13 +37,10 @@ class MWConnection(tornadio.SocketConnection):
 
     def on_close(self):
         self.participants.remove(self)
-        self.cleanup_resorces()
+        mobwrite_daemon.do_cleanup()
 
     def broadcast(self, msg, to ):
         map(self.send( msg ), to )
-    
-    def cleanup_resorces(self, res=None):
-        map( lambda r: r.do_cleanup(), self.resources.values() )
     
     @property
     def other_participants(self):
