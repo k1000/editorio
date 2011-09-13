@@ -22,7 +22,7 @@ textarea {
 
 <script src="/static/js/diff_match_patch_uncompressed.js"></script>
 <script src="/static/js/mobwrite_core.js"></script>
-<script src="/static/js/mobwrite_form.js"></script>
+
 <script src="/static/js/mobwriteio.js"></script>
 
 
@@ -32,39 +32,26 @@ textarea {
 <body >
 
 <table style="height: 100%; width: 100%">
-
+<input type="text" id="res" value="wwww"/>
+<button id="resBot">SET</button>
 <tr><td height=1><h1>mobwrite as a collaborative editor</h1></td></tr>
 <tr><td><textarea id="demo_editor_text" style="width: 100%; height: 100%"></textarea></td></tr>
 
 </table>
 <script type="text/javascript">
 	
-	var text_area = document.getElementById('demo_editor_text');
-	var code_mirror = CodeMirror.fromTextArea( text_area, {
-		mode: {name: "javascript"},
-		lineNumbers: true,
-		indentUnit: 4
-	});
-
-window['mobwrite'] = mobwrite;
-
-ws = new io.Socket(window.location.hostname, {
-        port:8011,
-        resource:"mw",
-        transports:['websocket', 'flashsocket','xhr-multipart', 'xhr-polling']
-    }
-);
-ws.on('message', function( msg) { 
-  mobwrite.syncRun2_(msg.mw + '\n');
+var text_area = document.getElementById('demo_editor_text');
+var code_mirror = CodeMirror.fromTextArea( text_area, {
+	mode: {name: "javascript"},
+	lineNumbers: true,
+	indentUnit: 4
 });
-ws.on('connect', function( msg) {window.console.info( "connected")} );
-ws.on('disconnect', function( msg) {window.console.info( "disconnected" )});
 
-ws.connect();
 
-mobwrite.debug=true; 
-mobwrite.share('demo_editor_text');
-
+$("#resBot").click( function() {
+  connect( code_mirror );
+  return false
+})
 </script>
 
 </body>

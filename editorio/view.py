@@ -14,7 +14,7 @@ mobwrite_core.CFG.initConfig(mobwrite_daemon.ROOT_DIR
 
 
 class MWConnection(tornadio.SocketConnection):
-    # Class level variable
+    # Class level variables
     participants = set()
     resources = {}
 
@@ -38,13 +38,18 @@ class MWConnection(tornadio.SocketConnection):
 
     def on_close(self):
         self.participants.remove(self)
+        self.cleanup_resorces()
 
     def broadcast(self, msg, to ):
         map(self.send( msg ), to )
-
+    
+    def cleanup_resorces(self, res=None):
+        map( lambda r: r.do_cleanup(), self.resources.values() )
+    
     @property
     def other_participants(self):
         return filter( lambda p: p is not self, self.participants )
+        
 
     def ping_users(self):
         self.broadcast( {"ping":"pong"}, self.other_participants )

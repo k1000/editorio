@@ -1,5 +1,42 @@
+mobwrite.shareCodeMirror = function( codemirror ) {
+    mobwrite.shareObj.apply(this, [codemirror.id]);
+    this.mergeChanges = true;
+    this.editor = codemirror;
+};
+
+// The codemirror shared object's parent is a shareObj.
+mobwrite.shareCodeMirror.prototype = new mobwrite.shareObj("");
 
 
+/**
+ * Retrieve the user's text.
+ * @return {string} Plaintext content.
+ */
+mobwrite.shareCodeMirror.prototype.getClientText = function() {
+  this.editor.lastCursor = this.editor.getCursor()
+  return this.editor.getValue()
+};
+
+mobwrite.shareCodeMirror.prototype.setClientText = function(text) {
+    this.editor.setValue(text);
+    //this.fireChange(this.element);
+    // restores position cursor back on the previous location
+    this.editor.setCursor( this.editor.lastCursor );
+};
+
+mobwrite.ws = new io.Socket(window.location.hostname, {
+      port:8011,
+      resource:"mw",
+      transports:['websocket', 'flashsocket','xhr-multipart', 'xhr-polling']
+  }
+);
+
+
+mobwrite.shareCodeMirror.shareHandler = function(codemirror) {
+    return new mobwrite.shareCodeMirror(codemirror);
+};
+
+mobwrite.shareHandlers.push(mobwrite.shareCodeMirror.shareHandler);
 
 /**
  * Ovverwrites original method
@@ -85,7 +122,7 @@ mobwrite.syncRun1_ = function() {
     */
     // Issue Ajax post of client-side changes and request server-side changes.
     //data = 'q=' + encodeURIComponent(data);
-    ws.send( {"mw": data, "res":window.location.hostname} );
+    mobwrite.ws.send( {"mw": data, "res":x} );
   /*  mobwrite.syncAjaxObj_ = mobwrite.syncLoadAjax_(mobwrite.syncGateway, data,
         mobwrite.syncCheckAjax_);
     // Execution will resume in either syncCheckAjax_(), or syncKill_()
@@ -93,32 +130,21 @@ mobwrite.syncRun1_ = function() {
 };
 
 
-/**
-* Retrieve the user's text.
-* @return {string} Plaintext content.
-*/
-mobwrite.shareTextareaObj.prototype.getClientText = function() {
-  if (!mobwrite.validNode_(this.element)) {
-    mobwrite.unshare(this.file);
-  }
-  var text = mobwrite.shareTextareaObj.normalizeLinebreaks_(code_mirror.getValue());
-  if (this.element.type == 'text') {
-  // Numeric data should use overwrite mode.
-  this.mergeChanges = !text.match(/^\s*-?[\d.,]+\s*$/);
-  }
-  // takes position of the cursor
-  code_mirror.lastCursor = code_mirror.getCursor()
-  return text;
 
-};
+mobwrite.ws.on('message', function( msg) { 
+    mobwrite.syncRun2_(msg.mw + '\n');
+  });
+mobwrite.ws.on('connect', function( msg) {window.console.info( "connected")} );
+mobwrite.ws.on('disconnect', function( msg) {window.console.info( "disconnected" )});
 
-/**
-* Set the user's text.
-* @param {string} text New text
-*/
-mobwrite.shareTextareaObj.prototype.setClientText = function(text) {
-  code_mirror.setValue(text);
-  this.fireChange(this.element);
-  // restores position cursor back on the previous location
-  code_mirror.setCursor( code_mirror.lastCursor );
-};
+
+function connect( res ){
+  if (!mobwrite.ws.connected){
+    res.id = $("#res").val();
+    mobwrite.ws.connect();
+    mobwrite.debug=true;
+
+    mobwrite.share(res);
+  } 
+}
+
